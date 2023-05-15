@@ -1,0 +1,116 @@
+﻿@page "/calculatetax/"
+
+<h3>Tax Calculation</h3>
+
+
+@if (string.IsNullOrEmpty(Message) == false)
+{
+    <div class="alert alert-danger">
+        @Message
+    </div>
+}
+
+@if (editflag)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="@EditCalculatedTaxVM" OnValidSubmit="EditCalculatedTax">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label class="control-label">PostalCode</label>
+                    <InputText class="form-control" @bind-Value="@EditCalculatedTaxVM.PostalCode"></InputText>
+                    <ValidationMessage For="@(() => EditCalculatedTaxVM.PostalCode)" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Annual Income</label>
+                    <InputNumber class="form-control" @bind-Value="@EditCalculatedTaxVM.AnnualIncome"></InputNumber>
+                    <ValidationMessage For="@(() => EditCalculatedTaxVM.AnnualIncome)" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Tax Amount</label>
+                    <InputNumber class="form-control" @bind-Value="@EditCalculatedTaxVM.TaxAmount"></InputNumber>
+                    <ValidationMessage For="@(() => EditCalculatedTaxVM.TaxAmount)" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Tax Rate</label>
+                    <InputNumber class="form-control" @bind-Value="@EditCalculatedTaxVM.TaxRate"></InputNumber>
+                    <ValidationMessage For="@(() => EditCalculatedTaxVM.TaxRate)" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="@calculatedTax" OnValidSubmit="CalculateTax">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label class="control-label">PostalCode</label>
+                    <InputText class="form-control" @bind-Value="@calculatedTax.PostalCode"></InputText>
+                    <ValidationMessage For="@(() => calculatedTax.PostalCode)" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Annual Income</label>
+                    <InputNumber class="form-control" @bind-Value="@calculatedTax.Amount"></InputNumber>
+                    <ValidationMessage For="@(() => calculatedTax.Amount)" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Calculate" class="btn btn-primary" />
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+
+
+
+<div clas></div>
+@if (calculatedTaxVM == null)
+{
+    <p>Loading Data...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Annual Income
+                </th>
+                <th>
+                    Tax Amount
+                </th>
+                <th>Tax Rate %</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var calculatedTax in calculatedTaxVM)
+            {
+                <tr>
+                    <td>@calculatedTax.Id </td>
+                    <td>@calculatedTax.AnnualIncome </td>
+                    <td>@calculatedTax.TaxAmount </td>
+                    <td>@calculatedTax.TaxRate </td>
+                    <td>
+                        <button @onclick="()=>PreEditCalculatedTax(calculatedTax.Id)" class="btn btn-success">Edit</button>
+                        <button @onclick="()=>DeleteCalculatedTax(calculatedTax.Id)" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
